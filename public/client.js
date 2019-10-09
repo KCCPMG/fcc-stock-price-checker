@@ -1,14 +1,15 @@
 $(function() {
   $('#testForm').submit(function(e) {
-    console.log("client test");
     $.ajax({
       url: '/api/stock-prices',
       type: 'get',
       data: $('#testForm').serialize(),
       success: function(data) {
+        console.log('success test');
         $('#jsonResult').text(JSON.stringify(data));
       }
     });
+    console.log('client test');
     e.preventDefault();
   });
   $('#testForm2').submit(function(e) {

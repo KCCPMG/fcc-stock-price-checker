@@ -11,3 +11,15 @@
   margin-left: 5%;
 }
 
+input[type=text] {
+  width: 100px;
+}
+
+#hr2 {
+  text-align: left;
+}
+
+#hr3 {
+  margin: 50px;
+  margin-top: 200px;
+}
