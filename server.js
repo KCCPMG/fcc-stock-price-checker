@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(helmet.contentSecurityPolicy({
   directives : {
-    defaultSrc : ["'self'"],
+    defaultSrc : ["'self'", "kccpmg-fcc-stock-price-checker.glitch.me"],
     scriptSrc : ["'self'"]
   }
 }))
