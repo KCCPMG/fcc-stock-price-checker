@@ -14,7 +14,7 @@ var MongoClient = require('mongodb');
 const CONNECTION_STRING = process.env.DB; //MongoClient.connect(CONNECTION_STRING, function(err, db) {});
 
 /*
-x - Set the content security policies to only allow loading of scripts and css from your server.
+Set the content security policies to only allow loading of scripts and css from your server.
 I can GET /api/stock-prices with form data containing a Nasdaq stock ticker and recieve back an object stockData.
 In stockData, I can see the stock(string, the ticker), price(decimal in string format), and likes(int).
 I can also pass along field like as true(boolean) to have my like added to the stock(s). Only 1 like per ip should be accepted.
