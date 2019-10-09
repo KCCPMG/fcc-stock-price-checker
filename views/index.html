@@ -61,6 +61,7 @@
     <script>
       $(function() {
         $('#testForm').submit(function(e) {
+          console.log("test");
           $.ajax({
             url: '/api/stock-prices',
             type: 'get',
