@@ -30,7 +30,8 @@ All 5 functional tests are complete and passing.
 module.exports = function (app) {
 
   app.route('/api/stock-prices')
-  
+    
+    // I can GET /api/stock-prices with form data containing a Nasdaq stock ticker and recieve back an object stockData.
     .get(function(req,res) {
       let ticker = req.query.stock;
       let api_url = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=" + ticker + "&interval=5min&apikey=" + process.env.ALPHA_VANTAGE_API_KEY;
@@ -45,7 +46,12 @@ module.exports = function (app) {
           if (this.status === 200) {
             res.send("successful connection");
             console.log(this.responseType);
-            console.log(this.responseText);
+            let obj = JSON.parse(this.responseText);
+            console.log(typeof obj);
+            console.log(obj["Meta Data"]);
+            let lastRefreshed = obj["Meta Data"]["3. Last Refreshed"];
+            console.log(lastRefreshed);
+            console.log(obj["Time Series (5min)"][lastRefreshed]['4. close']);
           } else {
             res.send("bad connection");
           }
