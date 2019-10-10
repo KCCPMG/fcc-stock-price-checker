@@ -20,7 +20,7 @@ const CONNECTION_STRING = process.env.DB; //MongoClient.connect(CONNECTION_STRIN
 mongoose.open(CONNECTION_STRING, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  
+  dbName: "Stocks"
 })
 
 /*
