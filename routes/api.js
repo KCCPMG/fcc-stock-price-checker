@@ -11,7 +11,9 @@
 var expect = require('chai').expect;
 var MongoClient = require('mongodb');
 var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
+const jsdom = require('jsdom');
 
+const {JSDOM} 
 const CONNECTION_STRING = process.env.DB; //MongoClient.connect(CONNECTION_STRING, function(err, db) {});
 
 /*
@@ -50,6 +52,7 @@ module.exports = function (app) {
         // var el = document.createElement('el');
         // el.innerHTML = xhr.responseText;
         // console.log(el.findByClassName("Trsdu(0.3s) Trsdu(0.3s) Fw(b) Fz(36px) Mb(-4px) D(b)"));
+        
         console.log("OK")
       }
       xhr.send();
