@@ -17,7 +17,8 @@
     "zombie": "^5.0.5",
     "helmet": "^3.1.0",
     "xmlhttprequest": "^1.8.0",
-    "jsdom": "^15.1.1"
+    "jsdom": "^15.1.1",
+    "mongoose": "^5.7.4"
   },
   "engines": {
     "node": "10.15.3"

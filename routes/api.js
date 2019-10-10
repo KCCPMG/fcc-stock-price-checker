@@ -15,13 +15,35 @@ var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 const jsdom = require('jsdom');
 
 const {JSDOM} = jsdom;
-const CONNECTION_STRING = process.env.DB; //MongoClient.connect(CONNECTION_STRING, function(err, db) {});
+const CONNECTION_STRING = process.env.CONNECTION_STRING; //MongoClient.connect(CONNECTION_STRING, function(err, db) {});
 
-mongoose.open(CONNECTION_STRING, {
+mongoose.connect(CONNECTION_STRING, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   dbName: "Stocks"
 })
+const db = mongoose.connection;
+
+db.on('error', function(err) {
+  console.log(err);
+})
+
+db.once('open', function() {
+  console.log('They\re connected!');
+})
+
+const stockSchema = new mongoose.Schema({
+  stock: {
+    type: String,
+    required: true
+  },
+  likes: {
+    type: Number,
+    required: true
+  }
+})
+
+var Stock = mongoose.model('stock', stockSchema);
 
 /*
 x - Set the content security policies to only allow loading of scripts and css from your server.
