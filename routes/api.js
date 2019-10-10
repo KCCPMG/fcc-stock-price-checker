@@ -82,7 +82,7 @@ module.exports = function (app) {
                   reject("invalid stock")
                 } else {
                   let lastRefreshed = obj["Meta Data"]["3. Last Refreshed"];
-                  resolve(obj["Time Series (5min)"][lastRefreshed]['4. close']);
+                  resolve({price: obj["Time Series (5min)"][lastRefreshed]['4. close']});
                 }
               } else {
                 reject("bad connection");
@@ -99,26 +99,29 @@ module.exports = function (app) {
         return new Promise(function(resolve, reject){
           Stock.findOne({stock: ticker}, function(err, data){
             if (err) {
-              let newStock = new Stock({stock: ticker, likes: 0});
-              newStock.save();
-              resolve({likes: 0});
+              console.log(err);   
             }
-            else resolve({likes: data.likes});
+            else {
+              if (data) resolve({likes: data.likes});
+              else {
+                let newStock = new Stock({stock: ticker, likes: 0});
+                newStock.save();
+                resolve({likes: 0});
+              }
+            }
           })
         });
       }
     
-      async function respond() {
+      async function respond(ticker) {
         // let price = await getPrice();
         // res.send(price);
-        Promise.all([getPrice(), getLikes()]).then(function(prices){
-          res.json({stockData : {
-            
-          }});
-        })
+        Promise.all([getPrice(ticker), getLikes(ticker)]).then(function(prices){
+          res.json({stockData : Object.assign(prices)});    
+        });       
       }
       
-      respond();
+      respond(ticker);
     
     
     
