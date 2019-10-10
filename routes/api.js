@@ -67,14 +67,14 @@ module.exports = function (app) {
       // res.send(req.query);
     
       let api_url = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=" + ticker + "&interval=5min&apikey=" + process.env.ALPHA_VANTAGE_API_KEY;
-      console.log(api_url);
+      // console.log(api_url);
     
       function getPrice() {
         return new Promise(function(resolve, reject){
           let xhr = new XMLHttpRequest();
           let price;
           xhr.onreadystatechange = function() {
-            console.log(xhr.readyState, xhr.status);
+            // console.log(xhr.readyState, xhr.status);
             if (this.readyState === 4) {
               if (this.status === 200) {
                 let obj = JSON.parse(this.responseText);
@@ -96,8 +96,11 @@ module.exports = function (app) {
       }
     
       async function respond() {
-        let price = await getPrice();
-        res.send(price);
+        // let price = await getPrice();
+        // res.send(price);
+        Promise.all([getPrice]).then(function(prices){
+          res.send(prices[0])
+        })
       }
       
       respond();
