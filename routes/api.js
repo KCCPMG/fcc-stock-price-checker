@@ -30,11 +30,12 @@ module.exports = function (app) {
   
     // I can GET /api/stock-prices with form data containing a Nasdaq stock ticker and recieve back an object stockData.
     .get(function (req, res){
-      // var stock = req.params; // to be retrieved from the request
-      console.log('console response test');
-      console.log("params", req.params);
-      console.log("body", req.body);
-      res.send('response test');
+      let stock = req.query.stock; // to be retrieved from the request
+      let requestUrl = "https://finance.google.com/finance/info?q=NASDAQ%3a" + stock;
+      let xhr = new XMLHttpRequest("")
+    
+    
+      res.send(stock);
             
     
     });
