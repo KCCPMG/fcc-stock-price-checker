@@ -57,7 +57,11 @@ module.exports = function (app) {
         // console.log(body.querySelector("#quote-header-info div.My\(6px\).Pos\(r\).smartphone_Mt\(6px\) div.D\(ib\).Va\(m\).Maw\(65\%\).Maw\(60\%\)--tab768.Ov\(h\) div span.Trsdu\(0\.3s\).Fw\(b\).Fz\(36px\).Mb\(-4px\).D\(ib\)"));
         // console.log(body.querySelector("#quote-header-info > div.My\\(6px\\).Pos\\(r\\).smartphone_Mt\\(6px\\) > div.D\\(ib\\).Va\\(m\\).Maw\\(65\\%\\).Maw\\(60\\%\\)--tab768.Ov\\(h\\) > div > span.Trsdu\\(0\\.3s\\).Fw\\(b\\).Fz\\(36px\\).Mb\\(-4px\\).D\\(ib\\)").innerHTML);
         // console.log(body.querySelector("#quote-header-info").querySelector(".span").innerHTML);
-        console.log(body.querySelect("#quote-header-info").children)
+        console.log(body.querySelector("#quote-header-info").children[2].className)
+        console.log(body.querySelector("#quote-header-info").children[2].innerHTML)
+        console.log(body.querySelector("#quote-header-info").children[2].children[0].innerHTML);
+        console.log(body.querySelector("#quote-header-info").children[2].children[0].children[0].innerHTML);
+        let header = body.querySelector("#quote-header-info");
       }
       xhr.send();
       res.send(stock);
