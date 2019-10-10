@@ -38,10 +38,18 @@ module.exports = function (app) {
     
       let xhr = new XMLHttpRequest();
       xhr.open('GET', api_url);
-      xhr.onload = function() {
-        res.send(xhr.responseTest);
+      // xhr.onload = function() {
+      //   console.log(xhr.readystate, xhr.status);
+      //   console.log(xhr.response);
+      //   res.send("test");
+      // }
+    
+      xhr.onreadystatechange = function() {
+        console.log(res.readystate, res.status);
+        if (res.readystate === 4 && res.stu)
       }
       xhr.send();
+      res.send
     });
   
   
