@@ -44,6 +44,7 @@ module.exports = function (app) {
         if (this.readyState === 4) {
           if (this.status === 200) {
             res.send("successful connection");
+            console.log(this.responseType);
             console.log(this.responseText);
           } else {
             res.send("bad connection");
@@ -51,6 +52,7 @@ module.exports = function (app) {
         } 
       }
       xhr.open('GET', api_url);
+      xhr.responseType='json';
       xhr.send();
 
     });
