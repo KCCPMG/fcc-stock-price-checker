@@ -37,14 +37,17 @@ module.exports = function (app) {
       let xhr = new XMLHttpRequest();
         
       xhr.open('GET', requestUrl, true);
-      xhr.onreadystatechange = function(){
-        if (xhr.readyState === 4 && xhr.status === 200) {
-          res.send(xhr.responseText);
-        } else if(xhr.readyState === 4 && xhr.status === 403) {
-          res.send(requestUrl);          
-        } else {
-          console.log(xhr.readyState, xhr.status);
-        }
+      // xhr.onreadystatechange = function(){
+      //   if (xhr.readyState === 4 && xhr.status === 200) {
+      //     res.send(xhr.responseText);
+      //   } else if(xhr.readyState === 4 && xhr.status === 403) {
+      //     res.send(requestUrl);          
+      //   } else {
+      //     console.log(xhr.readyState, xhr.status, xhr.responseText.length);
+      //   }
+      // }
+      xhr.onload = function() {
+        console.log(xhr.responseText);
       }
       xhr.send();
       // res.send(stock);
