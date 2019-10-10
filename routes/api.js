@@ -32,7 +32,8 @@ module.exports = function (app) {
     // I can GET /api/stock-prices with form data containing a Nasdaq stock ticker and recieve back an object stockData.
     .get(function (req, res){
       let stock = req.query.stock; // to be retrieved from the request
-      let requestUrl = "https://finance.google.com/finance/info?q=NASDAQ%3a" + stock;
+      // let requestUrl = "https://finance.google.com/finance/info?q=NASDAQ%3a" + stock;
+      let requestUrl = "https://finance.yahoo.com/quote/ROKU?p=ROKU&.tsrc=fin-tre-srch"
       let xhr = new XMLHttpRequest();
         
       xhr.open('GET', requestUrl, true);
