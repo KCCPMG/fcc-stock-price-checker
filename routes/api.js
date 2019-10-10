@@ -45,6 +45,72 @@ const stockSchema = new mongoose.Schema({
 
 var Stock = mongoose.model('stock', stockSchema);
 
+function getPrice(ticker) {
+  return new Promise(function(resolve, reject){
+    let api_url = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=" + ticker + "&interval=5min&apikey=" + process.env.ALPHA_VANTAGE_API_KEY;
+    let xhr = new XMLHttpRequest();
+    let price;
+    xhr.onreadystatechange = function() {
+      // console.log(xhr.readyState, xhr.status);
+      if (this.readyState === 4) {
+        if (this.status === 200) {
+          let obj = JSON.parse(this.responseText);
+          if (obj["Error Message"] === "Invalid API call. Please retry or visit the documentation (https://www.alphavantage.co/documentation/) for TIME_SERIES_INTRADAY.") {
+            reject("invalid stock")
+          } else {
+            let lastRefreshed = obj["Meta Data"]["3. Last Refreshed"];
+            resolve({price: obj["Time Series (5min)"][lastRefreshed]['4. close']});
+          }
+        } else {
+          reject("bad connection");
+        }
+      } 
+    }
+    xhr.open('GET', api_url);
+    xhr.responseType='json';
+    xhr.send();
+  })       
+}
+
+function getLikes(ticker) {
+  return new Promise(function(resolve, reject){
+    Stock.findOne({stock: ticker}, function(err, data){
+      if (err) {
+        console.log(err);   
+      }
+      else {
+        if (data) resolve({likes: data.likes});
+        else {
+          let newStock = new Stock({stock: ticker, likes: 0});
+          newStock.save();
+          resolve({likes: 0});
+        }
+      }
+    })
+  });
+}
+
+function increaseLikes(ticker) {
+  return new Promise(function(resolve, reject){
+    Stock.findOne({stock: ticker}, function(err, data){
+      if (err) console.log(err);
+      else {
+        if (data) {
+          data.likes++;
+          data.save();
+          resolve(data.likes);
+        } else {
+          let newStock = new Stock({stock: ticker, likes: 1});
+          resolve({likes: 1});
+        }
+      }
+    })
+  })
+}
+    
+
+
+
 /*
 x - Set the content security policies to only allow loading of scripts and css from your server.
 I can GET /api/stock-prices with form data containing a Nasdaq stock ticker and recieve back an object stockData.
@@ -63,62 +129,25 @@ module.exports = function (app) {
     // I can GET /api/stock-prices with form data containing a Nasdaq stock ticker and recieve back an object stockData.
     .get(function(req,res) {
       let ticker = req.query.stock;
+      let like = req.query.like;
     
       // res.send(req.query);
     
       // console.log(api_url);
     
-      function getPrice(ticker) {
-        return new Promise(function(resolve, reject){
-          let api_url = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=" + ticker + "&interval=5min&apikey=" + process.env.ALPHA_VANTAGE_API_KEY;
-          let xhr = new XMLHttpRequest();
-          let price;
-          xhr.onreadystatechange = function() {
-            // console.log(xhr.readyState, xhr.status);
-            if (this.readyState === 4) {
-              if (this.status === 200) {
-                let obj = JSON.parse(this.responseText);
-                if (obj["Error Message"] === "Invalid API call. Please retry or visit the documentation (https://www.alphavantage.co/documentation/) for TIME_SERIES_INTRADAY.") {
-                  reject("invalid stock")
-                } else {
-                  let lastRefreshed = obj["Meta Data"]["3. Last Refreshed"];
-                  resolve({price: obj["Time Series (5min)"][lastRefreshed]['4. close']});
-                }
-              } else {
-                reject("bad connection");
-              }
-            } 
-          }
-          xhr.open('GET', api_url);
-          xhr.responseType='json';
-          xhr.send();
-        })       
-      }
-    
-      function getLikes(ticker) {
-        return new Promise(function(resolve, reject){
-          Stock.findOne({stock: ticker}, function(err, data){
-            if (err) {
-              console.log(err);   
-            }
-            else {
-              if (data) resolve({likes: data.likes});
-              else {
-                let newStock = new Stock({stock: ticker, likes: 0});
-                newStock.save();
-                resolve({likes: 0});
-              }
-            }
-          })
-        });
-      }
-    
-      async function respond(ticker) {
+
+      async function respond(ticker, like) {
         // let price = await getPrice();
         // res.send(price);
-        Promise.all([getPrice(ticker), getLikes(ticker)]).then(function(prices){
-          res.json({stockData : Object.assign(prices)});    
-        });       
+        
+        
+        Promise.all([getPrice(ticker), 
+                     function() {
+                       like ? increaseLikes(ticker) : getLikes(ticker)
+                     }])
+          .then(function(prices){
+            res.json({stockData : Object.assign({stock: ticker}, ...prices)});    
+          });       
       }
       
       respond(ticker);
