@@ -1,11 +1,12 @@
 $(function() {
+  var count = 0;
   $('#testForm').submit(function(e) {
-    console.log(e);
     $.ajax({
       url: '/api/stock-prices',
       type: 'get',
       data: $('#testForm').serialize(),
       success: function(data) {
+        count++;
         console.log('success test');
         $('#jsonResult').text(JSON.stringify(data));
       }
