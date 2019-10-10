@@ -63,6 +63,9 @@ module.exports = function (app) {
     // I can GET /api/stock-prices with form data containing a Nasdaq stock ticker and recieve back an object stockData.
     .get(function(req,res) {
       let ticker = req.query.stock;
+    
+      res.send(req.query);
+    
       let api_url = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=" + ticker + "&interval=5min&apikey=" + process.env.ALPHA_VANTAGE_API_KEY;
       console.log(api_url);
     
