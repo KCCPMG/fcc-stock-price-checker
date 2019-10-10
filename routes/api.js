@@ -13,7 +13,7 @@ var MongoClient = require('mongodb');
 var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 const jsdom = require('jsdom');
 
-const {JSDOM} 
+const {JSDOM} = jsdom;
 const CONNECTION_STRING = process.env.DB; //MongoClient.connect(CONNECTION_STRING, function(err, db) {});
 
 /*
@@ -52,11 +52,12 @@ module.exports = function (app) {
         // var el = document.createElement('el');
         // el.innerHTML = xhr.responseText;
         // console.log(el.findByClassName("Trsdu(0.3s) Trsdu(0.3s) Fw(b) Fz(36px) Mb(-4px) D(b)"));
-        
-        console.log("OK")
+        let dom = new JSDOM(xhr.responseText);
+        let body = dom.window.document.body;
+        console.log(body.querySelector("#quote-header-info > div.My\(6px\).Pos\(r\).smartphone_Mt\(6px\) > div.D\(ib\).Va\(m\).Maw\(65\%\).Maw\(60\%\)--tab768.Ov\(h\) > div > span.Trsdu\(0\.3s\).Fw\(b\).Fz\(36px\).Mb\(-4px\).D\(ib\)"));
       }
       xhr.send();
-      // res.send(stock);
+      res.send(stock);
             
     
     });
