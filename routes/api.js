@@ -10,11 +10,18 @@
 
 var expect = require('chai').expect;
 var MongoClient = require('mongodb');
+var mongoose = require('mongoose');
 var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 const jsdom = require('jsdom');
 
 const {JSDOM} = jsdom;
 const CONNECTION_STRING = process.env.DB; //MongoClient.connect(CONNECTION_STRING, function(err, db) {});
+
+mongoose.open(CONNECTION_STRING, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  
+})
 
 /*
 x - Set the content security policies to only allow loading of scripts and css from your server.
@@ -54,7 +61,8 @@ module.exports = function (app) {
               let lastRefreshed = obj["Meta Data"]["3. Last Refreshed"];
               // console.log(lastRefreshed);
               // console.log(obj["Time Series (5min)"][lastRefreshed]['4. close']);
-              res.send(obj["Time Series (5min)"][lastRefreshed]['4. close'])
+              let price = (obj["Time Series (5min)"][lastRefreshed]['4. close']);
+              res.json({stockData : {stock : ticker, price : price}})
             }
           } else {
             res.send("bad connection");
