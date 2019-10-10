@@ -64,42 +64,76 @@ module.exports = function (app) {
     .get(function(req,res) {
       let ticker = req.query.stock;
     
-      res.send(req.query);
+      // res.send(req.query);
     
       let api_url = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=" + ticker + "&interval=5min&apikey=" + process.env.ALPHA_VANTAGE_API_KEY;
       console.log(api_url);
     
-      let xhr = new XMLHttpRequest();
-      var price;
-    
-      xhr.onreadystatechange = function() {
-        console.log(xhr.readyState, xhr.status);
-        if (this.readyState === 4) {
-          if (this.status === 200) {
-            // console.log(this.responseType);
-            let obj = JSON.parse(this.responseText);
-            if (obj["Error Message"] === "Invalid API call. Please retry or visit the documentation (https://www.alphavantage.co/documentation/) for TIME_SERIES_INTRADAY.") {
-              res.send("invalid stock")
+      function getPrice() {
+        let xhr = new XMLHttpRequest();
+        let price;
+        xhr.onreadystatechange = function() {
+          console.log(xhr.readyState, xhr.status);
+          if (this.readyState === 4) {
+            if (this.status === 200) {
+              let obj = JSON.parse(this.responseText);
+              if (obj["Error Message"] === "Invalid API call. Please retry or visit the documentation (https://www.alphavantage.co/documentation/) for TIME_SERIES_INTRADAY.") {
+                price = ("invalid stock")
+              } else {
+                let lastRefreshed = obj["Meta Data"]["3. Last Refreshed"];
+                price = (obj["Time Series (5min)"][lastRefreshed]['4. close']);
+              }
             } else {
-              // console.log(typeof obj);
-              // console.log(obj["Meta Data"]);
-              let lastRefreshed = obj["Meta Data"]["3. Last Refreshed"];
-              // console.log(lastRefreshed);
-              // console.log(obj["Time Series (5min)"][lastRefreshed]['4. close']);
-              let price = (obj["Time Series (5min)"][lastRefreshed]['4. close']);
-              // res.json({stockData : {stock : ticker, price : price}})
+              price = ("bad connection");
             }
-          } else {
-            // res.send("bad connection");
-          }
-        } 
+          } 
+        }
+        xhr.open('GET', api_url);
+        xhr.responseType='json';
+        xhr.send();
       }
-      xhr.open('GET', api_url);
-      xhr.responseType='json';
-      xhr.send();
-      let resPromise = new Promise(function(resolve, reject){
-        
-      }).then()
+    
+      async function respond() {
+        let price = await getPrice();
+        res.send(price);
+      }
+      
+      respond();
+    
+    
+    
+    
+    
+    
+    
+//       let xhr = new XMLHttpRequest();
+    
+//       xhr.onreadystatechange = function() {
+//         console.log(xhr.readyState, xhr.status);
+//         if (this.readyState === 4) {
+//           if (this.status === 200) {
+//             // console.log(this.responseType);
+//             let obj = JSON.parse(this.responseText);
+//             if (obj["Error Message"] === "Invalid API call. Please retry or visit the documentation (https://www.alphavantage.co/documentation/) for TIME_SERIES_INTRADAY.") {
+//               res.send("invalid stock")
+//             } else {
+//               // console.log(typeof obj);
+//               // console.log(obj["Meta Data"]);
+//               let lastRefreshed = obj["Meta Data"]["3. Last Refreshed"];
+//               // console.log(lastRefreshed);
+//               // console.log(obj["Time Series (5min)"][lastRefreshed]['4. close']);
+//               let price = (obj["Time Series (5min)"][lastRefreshed]['4. close']);
+//               // res.json({stockData : {stock : ticker, price : price}})
+//             }
+//           } else {
+//             // res.send("bad connection");
+//           }
+//         } 
+//       }
+//       xhr.open('GET', api_url);
+//       xhr.responseType='json';
+//       xhr.send();
+      
       
 
     });
