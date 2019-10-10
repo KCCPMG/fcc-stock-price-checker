@@ -47,9 +47,10 @@ module.exports = function (app) {
       //   }
       // }
       xhr.onload = function() {
-        var el = document.createElement('el');
-        el.innerHTML = xhr.responseText;
-        console.log(el.findByClassName("Trsdu(0.3s) Trsdu(0.3s) Fw(b) Fz(36px) Mb(-4px) D(b)"));
+        // var el = document.createElement('el');
+        // el.innerHTML = xhr.responseText;
+        // console.log(el.findByClassName("Trsdu(0.3s) Trsdu(0.3s) Fw(b) Fz(36px) Mb(-4px) D(b)"));
+        console.log("OK")
       }
       xhr.send();
       // res.send(stock);

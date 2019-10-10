@@ -19,7 +19,7 @@
     "xmlhttprequest": "^1.8.0"
   },
   "engines": {
-    "node": "4.4.3"
+    "node": "10.15.3"
   },
   "repository": {
     "type": "git",
