@@ -66,11 +66,11 @@ module.exports = function (app) {
     
       // res.send(req.query);
     
-      let api_url = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=" + ticker + "&interval=5min&apikey=" + process.env.ALPHA_VANTAGE_API_KEY;
       // console.log(api_url);
     
-      function getPrice() {
+      function getPrice(ticker) {
         return new Promise(function(resolve, reject){
+          let api_url = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=" + ticker + "&interval=5min&apikey=" + process.env.ALPHA_VANTAGE_API_KEY;
           let xhr = new XMLHttpRequest();
           let price;
           xhr.onreadystatechange = function() {
@@ -95,11 +95,26 @@ module.exports = function (app) {
         })       
       }
     
+      function getLikes(ticker) {
+        return new Promise(function(resolve, reject){
+          Stock.findOne({stock: ticker}, function(err, data){
+            if (err) {
+              let newStock = new Stock({stock: ticker, likes: 0});
+              newStock.save();
+              resolve({likes: 0});
+            }
+            else resolve({likes: data.likes});
+          })
+        });
+      }
+    
       async function respond() {
         // let price = await getPrice();
         // res.send(price);
-        Promise.all([getPrice]).then(function(prices){
-          res.send(prices[0])
+        Promise.all([getPrice(), getLikes()]).then(function(prices){
+          res.json({stockData : {
+            
+          }});
         })
       }
       
