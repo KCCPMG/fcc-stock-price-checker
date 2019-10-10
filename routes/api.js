@@ -70,7 +70,7 @@ module.exports = function (app) {
       console.log(api_url);
     
       let xhr = new XMLHttpRequest();
-
+      var price;
     
       xhr.onreadystatechange = function() {
         console.log(xhr.readyState, xhr.status);
@@ -87,16 +87,20 @@ module.exports = function (app) {
               // console.log(lastRefreshed);
               // console.log(obj["Time Series (5min)"][lastRefreshed]['4. close']);
               let price = (obj["Time Series (5min)"][lastRefreshed]['4. close']);
-              res.json({stockData : {stock : ticker, price : price}})
+              // res.json({stockData : {stock : ticker, price : price}})
             }
           } else {
-            res.send("bad connection");
+            // res.send("bad connection");
           }
         } 
       }
       xhr.open('GET', api_url);
       xhr.responseType='json';
       xhr.send();
+      let resPromise = new Promise(function(resolve, reject){
+        
+      }).then()
+      
 
     });
   
