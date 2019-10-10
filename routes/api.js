@@ -44,14 +44,17 @@ module.exports = function (app) {
         console.log(xhr.readyState, xhr.status);
         if (this.readyState === 4) {
           if (this.status === 200) {
-            res.send("successful connection");
-            console.log(this.responseType);
+            // console.log(this.responseType);
             let obj = JSON.parse(this.responseText);
-            console.log(typeof obj);
-            console.log(obj["Meta Data"]);
+            if (obj === '{
+    "Error Message": "Invalid API call. Please retry or visit the documentation (https://www.alphavantage.co/documentation/) for TIME_SERIES_INTRADAY."
+}')
+            // console.log(typeof obj);
+            // console.log(obj["Meta Data"]);
             let lastRefreshed = obj["Meta Data"]["3. Last Refreshed"];
-            console.log(lastRefreshed);
-            console.log(obj["Time Series (5min)"][lastRefreshed]['4. close']);
+            // console.log(lastRefreshed);
+            // console.log(obj["Time Series (5min)"][lastRefreshed]['4. close']);
+            res.send(obj["Time Series (5min)"][lastRefreshed]['4. close'])
           } else {
             res.send("bad connection");
           }
