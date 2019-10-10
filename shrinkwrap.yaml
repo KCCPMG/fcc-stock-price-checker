@@ -7,6 +7,7 @@ dependencies:
   helmet: 3.21.1
   mocha: 3.5.3
   mongodb: 2.2.36
+  xmlhttprequest: 1.8.0
   zombie: 5.0.8
 packages:
   /abab/1.0.4:
@@ -1500,6 +1501,12 @@ packages:
     dev: false
     resolution:
       integrity: sha1-TYuPHszTQZqjYgYb7O9RXh5VljU=
+  /xmlhttprequest/1.8.0:
+    dev: false
+    engines:
+      node: '>=0.4.0'
+    resolution:
+      integrity: sha1-Z/4HXFwk/vOfnWX197f+dRcZaPw=
   /zombie/5.0.8:
     dependencies:
       babel-runtime: 5.8.29
@@ -1531,4 +1538,5 @@ specifiers:
   helmet: ^3.1.0
   mocha: ^3.2.0
   mongodb: ^2.2.16
+  xmlhttprequest: ^1.8.0
   zombie: ^5.0.5

@@ -10,6 +10,7 @@
 
 var expect = require('chai').expect;
 var MongoClient = require('mongodb');
+var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 
 const CONNECTION_STRING = process.env.DB; //MongoClient.connect(CONNECTION_STRING, function(err, db) {});
 
@@ -35,8 +36,12 @@ module.exports = function (app) {
       let xhr = new XMLHttpRequest();
         
       xhr.open('GET', requestUrl, true);
-      xhr.onload = function(){
-        res.send(xhr.response);
+      xhr.onreadystatechange = function(){
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          res.send(xhr.responseText);
+        } else {
+          console.log("Error");
+        }
       }
       xhr.send();
       // res.send(stock);
