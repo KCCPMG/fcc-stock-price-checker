@@ -55,7 +55,7 @@ module.exports = function (app) {
         let dom = new JSDOM(xhr.responseText);
         let body = dom.window.document.body;
         // console.log(body.querySelector("#quote-header-info div.My\(6px\).Pos\(r\).smartphone_Mt\(6px\) div.D\(ib\).Va\(m\).Maw\(65\%\).Maw\(60\%\)--tab768.Ov\(h\) div span.Trsdu\(0\.3s\).Fw\(b\).Fz\(36px\).Mb\(-4px\).D\(ib\)"));
-        console.log(body.querySelector("span.Trsdu"));
+        console.log(body.querySelector("#quote-header-info > div.My\\(6px\\).Pos\\(r\\).smartphone_Mt\\(6px\\) > div.D\\(ib\\).Va\\(m\\).Maw\\(65\\%\\).Maw\\(60\\%\\)--tab768.Ov\\(h\\) > div > span.Trsdu\\(0\\.3s\\).Fw\\(b\\).Fz\\(36px\\).Mb\\(-4px\\).D\\(ib\\)").innerHTML);
         // console.log(body.querySelector("#quote-header-info").querySelector("span").innerHTML);
       }
       xhr.send();
