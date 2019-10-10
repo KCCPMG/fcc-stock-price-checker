@@ -33,11 +33,11 @@ module.exports = function (app) {
       let stock = req.query.stock; // to be retrieved from the request
       let requestUrl = "https://finance.google.com/finance/info?q=NASDAQ%3a" + stock;
       let xhr = new XMLHttpRequest();
-      
-      xhr.onreadystatechange = function(){
         
+      xhr.open('GET', requestUrl, true);
+      xhr.onload = function(){
+        res.send(xhr.response);
       }
-      
       xhr.send();
       // res.send(stock);
             
