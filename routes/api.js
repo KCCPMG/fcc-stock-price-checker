@@ -31,50 +31,54 @@ module.exports = function (app) {
 
   app.route('/api/stock-prices')
   
-    // I can GET /api/stock-prices with form data containing a Nasdaq stock ticker and recieve back an object stockData.
-    .get(function (req, res){
-      let stock = req.query.stock; // to be retrieved from the request
-      // let requestUrl = "https://finance.google.com/finance/info?q=NASDAQ%3a" + stock;
-      let requestUrl = "https://finance.yahoo.com/quote/ROKU?p=ROKU&.tsrc=fin-tre-srch"
-      let xhr = new XMLHttpRequest();
-        
-      xhr.open('GET', requestUrl, true);
-      // xhr.onreadystatechange = function(){
-      //   if (xhr.readyState === 4 && xhr.status === 200) {
-      //     res.send(xhr.responseText);
-      //   } else if(xhr.readyState === 4 && xhr.status === 403) {
-      //     res.send(requestUrl);          
-      //   } else {
-      //     console.log(xhr.readyState, xhr.status, xhr.responseText.length);
-      //   }
-      // }
-      xhr.onload = function() {
-        // var el = document.createElement('el');
-        // el.innerHTML = xhr.responseText;
-        // console.log(el.findByClassName("Trsdu(0.3s) Trsdu(0.3s) Fw(b) Fz(36px) Mb(-4px) D(b)"));
-        let dom = new JSDOM(xhr.responseText);
-        let body = dom.window.document.body;
-        // console.log(body.querySelector("#quote-header-info div.My\(6px\).Pos\(r\).smartphone_Mt\(6px\) div.D\(ib\).Va\(m\).Maw\(65\%\).Maw\(60\%\)--tab768.Ov\(h\) div span.Trsdu\(0\.3s\).Fw\(b\).Fz\(36px\).Mb\(-4px\).D\(ib\)"));
-        // console.log(body.querySelector("#quote-header-info > div.My\\(6px\\).Pos\\(r\\).smartphone_Mt\\(6px\\) > div.D\\(ib\\).Va\\(m\\).Maw\\(65\\%\\).Maw\\(60\\%\\)--tab768.Ov\\(h\\) > div > span.Trsdu\\(0\\.3s\\).Fw\\(b\\).Fz\\(36px\\).Mb\\(-4px\\).D\\(ib\\)").innerHTML);
-        // console.log(body.querySelector("#quote-header-info").querySelector(".span").innerHTML);
-        
-        // console.log(body.querySelector("#quote-header-info").children[2].className)
-        // console.log(body.querySelector("#quote-header-info").children[2].innerHTML)
-        // console.log(body.querySelector("#quote-header-info").children[2].children[0].innerHTML);
-        // console.log(body.querySelector("#quote-header-info").children[2].children[0].children[0].innerHTML);
-        let header = body.querySelector("#quote-header-info");
-        console.log(header.innerHTML);
-        let data_rectid_13 = header.querySelector("div");
-        console.log(data_rectid_13.innerHTML);
-        let span = data_rectid_13.querySelector("span");
-        console.log(span.innerHTML);
-        let result = span.innerHTML;
-        console.log(result);
-      }
-      xhr.send();
-      res.send(stock);
-            
-    
+    .get(function(req,res) {
+      let ticker = req.query.stock;
+      let api_url = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=MSFT&interval=5min&apikey=demo";
     });
+  
+  
+    // I can GET /api/stock-prices with form data containing a Nasdaq stock ticker and recieve back an object stockData.
+//     .get(function (req, res){
+//       let stock = req.query.stock; // to be retrieved from the request
+//       // let requestUrl = "https://finance.google.com/finance/info?q=NASDAQ%3a" + stock;
+//       let requestUrl = "https://finance.yahoo.com/quote/ROKU?p=ROKU&.tsrc=fin-tre-srch"
+//       let xhr = new XMLHttpRequest();
+        
+//       xhr.open('GET', requestUrl, true);
+//       // xhr.onreadystatechange = function(){
+//       //   if (xhr.readyState === 4 && xhr.status === 200) {
+//       //     res.send(xhr.responseText);
+//       //   } else if(xhr.readyState === 4 && xhr.status === 403) {
+//       //     res.send(requestUrl);          
+//       //   } else {
+//       //     console.log(xhr.readyState, xhr.status, xhr.responseText.length);
+//       //   }
+//       // }
+//       xhr.onload = function() {
+//         // var el = document.createElement('el');
+//         // el.innerHTML = xhr.responseText;
+//         // console.log(el.findByClassName("Trsdu(0.3s) Trsdu(0.3s) Fw(b) Fz(36px) Mb(-4px) D(b)"));
+//         let dom = new JSDOM(xhr.responseText);
+//         let body = dom.window.document.body;
+//         // console.log(body.querySelector("#quote-header-info div.My\(6px\).Pos\(r\).smartphone_Mt\(6px\) div.D\(ib\).Va\(m\).Maw\(65\%\).Maw\(60\%\)--tab768.Ov\(h\) div span.Trsdu\(0\.3s\).Fw\(b\).Fz\(36px\).Mb\(-4px\).D\(ib\)"));
+//         // console.log(body.querySelector("#quote-header-info > div.My\\(6px\\).Pos\\(r\\).smartphone_Mt\\(6px\\) > div.D\\(ib\\).Va\\(m\\).Maw\\(65\\%\\).Maw\\(60\\%\\)--tab768.Ov\\(h\\) > div > span.Trsdu\\(0\\.3s\\).Fw\\(b\\).Fz\\(36px\\).Mb\\(-4px\\).D\\(ib\\)").innerHTML);
+//         // console.log(body.querySelector("#quote-header-info").querySelector(".span").innerHTML);
+        
+//         // console.log(body.querySelector("#quote-header-info").children[2].className)
+//         // console.log(body.querySelector("#quote-header-info").children[2].innerHTML)
+//         // console.log(body.querySelector("#quote-header-info").children[2].children[0].innerHTML);
+//         // console.log(body.querySelector("#quote-header-info").children[2].children[0].children[0].innerHTML);
+//         let header = body.querySelector("#quote-header-info");
+//         console.log(header.innerHTML);
+//         let data_rectid_13 = header.querySelector("div");
+//         console.log(data_rectid_13.innerHTML);
+//         let span = data_rectid_13.querySelector("span");
+//         console.log(span.innerHTML);
+//         let result = span.innerHTML;
+//         console.log(result);
+//       }
+//       xhr.send();
+//       res.send(stock);
+//     });
     
 };
