@@ -37,19 +37,22 @@ module.exports = function (app) {
       console.log(api_url);
     
       let xhr = new XMLHttpRequest();
-      xhr.open('GET', api_url);
-      // xhr.onload = function() {
-      //   console.log(xhr.readystate, xhr.status);
-      //   console.log(xhr.response);
-      //   res.send("test");
-      // }
+
     
       xhr.onreadystatechange = function() {
-        console.log(res.readystate, res.status);
-        if (res.readystate === 4 && res.stu)
+        console.log(xhr.readyState, xhr.status);
+        if (this.readyState === 4) {
+          if (this.status === 200) {
+            res.send("successful connection");
+            console.log(this.responseText);
+          } else {
+            res.send("bad connection");
+          }
+        } 
       }
+      xhr.open('GET', api_url);
       xhr.send();
-      res.send
+
     });
   
   
