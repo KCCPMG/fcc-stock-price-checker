@@ -19,6 +19,8 @@ app.use(cors({origin: '*'})); //For FCC testing purposes only
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(helmet.noCache());
+
 app.use(helmet.contentSecurityPolicy({
   directives : {
     defaultSrc : ["'self'", "kccpmg-fcc-stock-price-checker.glitch.me"],

@@ -1,5 +1,6 @@
 $(function() {
   $('#testForm').submit(function(e) {
+    console.log(e);
     $.ajax({
       url: '/api/stock-prices',
       type: 'get',
