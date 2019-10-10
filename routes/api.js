@@ -70,6 +70,15 @@ module.exports = function (app) {
       console.log(api_url);
     
       function getPrice() {
+        return new Promise(function(resolve, rejet){
+          
+        })
+        
+        
+        
+        
+        
+        
         let xhr = new XMLHttpRequest();
         let price;
         xhr.onreadystatechange = function() {
