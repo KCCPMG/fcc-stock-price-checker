@@ -33,7 +33,15 @@ module.exports = function (app) {
   
     .get(function(req,res) {
       let ticker = req.query.stock;
-      let api_url = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=MSFT&interval=5min&apikey=demo";
+      let api_url = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=" + ticker + "&interval=5min&apikey=" + process.env.ALPHA_VANTAGE_API_KEY;
+      console.log(api_url);
+    
+      let xhr = new XMLHttpRequest();
+      xhr.open('GET', api_url);
+      xhr.onload = function() {
+        res.send(xhr.responseTest);
+      }
+      xhr.send();
     });
   
   
