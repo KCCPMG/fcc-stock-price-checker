@@ -70,36 +70,29 @@ module.exports = function (app) {
       console.log(api_url);
     
       function getPrice() {
-        return new Promise(function(resolve, rejet){
-          
-        })
-        
-        
-        
-        
-        
-        
-        let xhr = new XMLHttpRequest();
-        let price;
-        xhr.onreadystatechange = function() {
-          console.log(xhr.readyState, xhr.status);
-          if (this.readyState === 4) {
-            if (this.status === 200) {
-              let obj = JSON.parse(this.responseText);
-              if (obj["Error Message"] === "Invalid API call. Please retry or visit the documentation (https://www.alphavantage.co/documentation/) for TIME_SERIES_INTRADAY.") {
-                price = ("invalid stock")
+        return new Promise(function(resolve, reject){
+          let xhr = new XMLHttpRequest();
+          let price;
+          xhr.onreadystatechange = function() {
+            console.log(xhr.readyState, xhr.status);
+            if (this.readyState === 4) {
+              if (this.status === 200) {
+                let obj = JSON.parse(this.responseText);
+                if (obj["Error Message"] === "Invalid API call. Please retry or visit the documentation (https://www.alphavantage.co/documentation/) for TIME_SERIES_INTRADAY.") {
+                  reject("invalid stock")
+                } else {
+                  let lastRefreshed = obj["Meta Data"]["3. Last Refreshed"];
+                  resolve(obj["Time Series (5min)"][lastRefreshed]['4. close']);
+                }
               } else {
-                let lastRefreshed = obj["Meta Data"]["3. Last Refreshed"];
-                price = (obj["Time Series (5min)"][lastRefreshed]['4. close']);
+                reject("bad connection");
               }
-            } else {
-              price = ("bad connection");
-            }
-          } 
-        }
-        xhr.open('GET', api_url);
-        xhr.responseType='json';
-        xhr.send();
+            } 
+          }
+          xhr.open('GET', api_url);
+          xhr.responseType='json';
+          xhr.send();
+        })       
       }
     
       async function respond() {
