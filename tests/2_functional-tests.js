@@ -67,9 +67,9 @@ suite('Functional Tests', function() {
       test('2 stocks', function(done) {
         chai.request(server)
         .get('/api/stock-prices')
-        .query({stock: 'goog', stock: 'atvi'})
+        .query({stock: ['goog', 'atvi']})
         .end(function(err, res){
-          console.log(req.url);
+          console.log(res.text);
           assert.equal(res.status, 200);
           assert.property(JSON.parse(res.text).stockData[0], "stock");
           assert.property(JSON.parse(res.text).stockData[0], "price");

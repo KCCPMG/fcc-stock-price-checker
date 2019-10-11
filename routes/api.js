@@ -151,7 +151,6 @@ module.exports = function (app) {
         // res.send(price);
         
         var likeFunction = like ? increaseLikes : getLikes;        
-        console.log(likeFunction);
         
         if (typeof ticker === "object") {
           
@@ -161,14 +160,12 @@ module.exports = function (app) {
             getPrice(ticker[1]),
             likeFunction(ticker[1])
           ]).then(function(data){
-            var firstStock = Object.assign(data[0], {rel_likes: data[1].likes-data[3].likes});
-            var secondStock = Object.assign(data[2], {rel_likes: data[3].likes-data[1].likes});
+            var firstStock = Object.assign(data[0], {stock: ticker[0], rel_likes: data[1].likes-data[3].likes});
+            var secondStock = Object.assign(data[2], {stock: ticker[1], rel_likes: data[3].likes-data[1].likes});
             res.json({stockData : [firstStock, secondStock]});
           }).catch(function(err){
             res.json(err);
-          })
-          
-          
+          })       
           
         } else {
           Promise.all([
