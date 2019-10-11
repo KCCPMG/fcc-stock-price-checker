@@ -29,7 +29,7 @@ db.on('error', function(err) {
 })
 
 db.once('open', function() {
-  console.log('They\re connected!');
+  console.log('They\'re connected!');
 })
 
 const stockSchema = new mongoose.Schema({
@@ -160,8 +160,8 @@ module.exports = function (app) {
             getPrice(ticker[1]),
             likeFunction(ticker[1])
           ]).then(function(data){
-            var firstStock = Object.assign(data[0], {stock: ticker[0], rel_likes: data[1].likes-data[3].likes});
-            var secondStock = Object.assign(data[2], {stock: ticker[1], rel_likes: data[3].likes-data[1].likes});
+            var firstStock = Object.assign({stock: ticker[0]}, data[0],  {rel_likes: data[1].likes-data[3].likes});
+            var secondStock = Object.assign({stock: ticker[1]}, data[2], {rel_likes: data[3].likes-data[1].likes});
             res.json({stockData : [firstStock, secondStock]});
           }).catch(function(err){
             res.json(err);

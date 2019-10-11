@@ -70,6 +70,7 @@ suite('Functional Tests', function() {
         .query({stock: ['goog', 'atvi']})
         .end(function(err, res){
           console.log(res.text);
+          console.log(JSON.parse(res.text)[0]);
           assert.equal(res.status, 200);
           assert.property(JSON.parse(res.text).stockData[0], "stock");
           assert.property(JSON.parse(res.text).stockData[0], "price");
