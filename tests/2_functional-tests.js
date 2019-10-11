@@ -78,6 +78,7 @@ suite('Functional Tests', function() {
           assert.property(JSON.parse(res.text).stockData[1], "rel_likes");
           assert.equal(JSON.parse(res.text).stockData[0].stock, "goog");
           assert.equal(JSON.parse(res.text).stockData[1].stock, "atvi");
+          assert.equal(Number(JSON.parse(res.text).stockData[0].price)-Number(JSON.parse(res.text).stockData[1].price), 0);
           done();
         });
       });
@@ -96,7 +97,7 @@ suite('Functional Tests', function() {
           assert.property(JSON.parse(res.text).stockData[1], "rel_likes");
           assert.equal(JSON.parse(res.text).stockData[0].stock, "goog");
           assert.equal(JSON.parse(res.text).stockData[1].stock, "atvi");
-          assert.equal(JSON.parse(res.text).stockData[0]-JSON.parse(res.text).stockData[1], 0);
+          assert.equal(Number(JSON.parse(res.text).stockData[0].price)-Number(JSON.parse(res.text).stockData[1].price), 0);
           done();
         });
       });
