@@ -149,11 +149,18 @@ module.exports = function (app) {
         console.log(likeFunction);
         
         if (typeof ticker === "object") {
+          
           Promise.all([
             getPrice(ticker[0]),
-            likeFunction(ticker[0])
-          ]).then(function(){
-            
+            likeFunction(ticker[0]),
+            getPrice(ticker[1]),
+            likeFunction(ticker[1])
+          ]).then(function(data){
+            var firstStock = Object.assign(data[0], data[1]);
+            var secondStock = Object.assign(data[2], data[3]);
+            res.json({stockData : });
+          }).catch(function(err){
+            res.json(err);
           })
           
           
@@ -163,11 +170,9 @@ module.exports = function (app) {
             getPrice(ticker),
             likeFunction(ticker)
           ]).then(function(data){
-            console.log(data);
-            console.log('done');
             res.json({stockData : Object.assign({stock: ticker}, ...data)});    
           }).catch(function(err){
-            console.log("ERROR: ", err);
+            res.json("ERROR: ", err);
           });  
         }
         
