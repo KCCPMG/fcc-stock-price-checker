@@ -99,12 +99,13 @@ function increaseLikes(ticker) {
         if (data) {
           data.likes++;
           data.save(function(){
-            console.log(data.likes);
-            resolve(data.likes);
+            resolve({likes: data.likes});
           });
         } else {
           let newStock = new Stock({stock: ticker, likes: 1});
-          resolve({likes: 1});
+          newStock.save(function(){
+            resolve({likes: 1});  
+          })
         }
       }
     })
