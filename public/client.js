@@ -9,7 +9,6 @@ $(function() {
         $('#jsonResult').text(JSON.stringify(data));
       }
     });
-    console.log('client test');
     e.preventDefault();
   });
   $('#testForm2').submit(function(e) {
