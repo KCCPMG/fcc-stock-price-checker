@@ -145,9 +145,12 @@ module.exports = function (app) {
         // let price = await getPrice();
         // res.send(price);
         
-        var likeFunction = like ? increaseLikes : getLikes;
-        
+        var likeFunction = like ? increaseLikes : getLikes;        
         console.log(likeFunction);
+        
+        if (typeof ticker === Object) {
+          
+        }
         
         Promise.all([
           getPrice(ticker),
