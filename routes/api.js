@@ -148,7 +148,7 @@ module.exports = function (app) {
         var likeFunction = like ? increaseLikes : getLikes;        
         console.log(likeFunction);
         
-        if (typeof ticker === Object) {
+        if (typeof ticker === "object") {
           
         }
         
