@@ -69,6 +69,7 @@ suite('Functional Tests', function() {
         .get('/api/stock-prices')
         .query({stock: 'goog', stock: 'atvi'})
         .end(function(err, res){
+          console.log(req.url);
           assert.equal(res.status, 200);
           assert.property(JSON.parse(res.text).stockData[0], "stock");
           assert.property(JSON.parse(res.text).stockData[0], "price");
