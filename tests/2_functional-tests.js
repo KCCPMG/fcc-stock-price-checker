@@ -10,6 +10,7 @@ var chaiHttp = require('chai-http');
 var chai = require('chai');
 var assert = chai.assert;
 var server = require('../server');
+var correctLikes = 0;
 
 chai.use(chaiHttp);
 
@@ -26,24 +27,56 @@ suite('Functional Tests', function() {
           assert.property(JSON.parse(res.text).stockData, "stock");
           assert.property(JSON.parse(res.text).stockData, "price");
           assert.property(JSON.parse(res.text).stockData, "likes");
-          assert.equal(JSON.parse(res.text).stockData, "goog");
+          assert.equal(JSON.parse(res.text).stockData.stock, "goog");
           done();
         });
       });
       
       test('1 stock with like', function(done) {
-        assert.fail();
-        done();
+        chai.request(server)
+        .get('/api/stock-prices')
+        .query({stock: 'goog', like: "true"})
+        .end(function(err, res){
+          assert.equal(res.status, 200);
+          assert.property(JSON.parse(res.text).stockData, "stock");
+          assert.property(JSON.parse(res.text).stockData, "price");
+          assert.property(JSON.parse(res.text).stockData, "likes");
+          assert.equal(JSON.parse(res.text).stockData.stock, "goog");
+          assert.isAbove(JSON.parse(res.text).stockData.likes, 0);
+          correctLikes = JSON.parse(res.text).stockData.likes;
+          done();
+        });
       });
       
+      
       test('1 stock with like again (ensure likes arent double counted)', function(done) {
-        assert.fail();
-        done();
+        chai.request(server)
+        .get('/api/stock-prices')
+        .query({stock: 'goog', like: "true"})
+        .end(function(err, res){
+          assert.equal(res.status, 200);
+          assert.property(JSON.parse(res.text).stockData, "stock");
+          assert.property(JSON.parse(res.text).stockData, "price");
+          assert.property(JSON.parse(res.text).stockData, "likes");
+          assert.equal(JSON.parse(res.text).stockData.stock, "goog");
+          assert.equal(JSON.parse(res.text).stockData.likes, correctLikes+1);
+          done();
+        });
       });
       
       test('2 stocks', function(done) {
-        assert.fail();
-        done();
+        chai.request(server)
+        .get('/api/stock-prices')
+        .query({stock: 'goog'})
+        .end(function(err, res){
+          assert.equal(res.status, 200);
+          assert.property(JSON.parse(res.text).stockData, "stock");
+          assert.property(JSON.parse(res.text).stockData, "price");
+          assert.property(JSON.parse(res.text).stockData, "likes");
+          assert.equal(JSON.parse(res.text).stockData.stock, "goog");
+          assert.fail();
+          done();
+        });
       });
       
       test('2 stocks with like', function(done) {
