@@ -97,8 +97,9 @@ function increaseLikes(ticker) {
       else {
         if (data) {
           data.likes++;
-          data.save();
-          resolve(data.likes);
+          data.save(function(){
+            resolve(data.likes);
+          });
         } else {
           let newStock = new Stock({stock: ticker, likes: 1});
           resolve({likes: 1});
@@ -140,17 +141,26 @@ module.exports = function (app) {
         // let price = await getPrice();
         // res.send(price);
         
+        var likeFunction;
+        if (like) {
+          likeFunction = increaseLikes;
+        } else {
+          likeFunction = getLikes;
+        }
         
-        Promise.all([getPrice(ticker), 
-                     function() {
-                       like ? increaseLikes(ticker) : getLikes(ticker)
-                     }])
-          .then(function(prices){
-            res.json({stockData : Object.assign({stock: ticker}, ...prices)});    
-          });       
+        console.log(likeFunction);
+        
+        Promise.all([
+          getPrice(ticker),
+          likeFunction(ticker)
+        ]).then(function(data){
+          res.json({stockData : Object.assign({stock: ticker}, ...data)});    
+        }).catch(function(err){
+          console.log("ERROR: ", err);
+        });       
       }
       
-      respond(ticker);
+      respond(ticker, like);
     
     
     
