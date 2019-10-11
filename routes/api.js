@@ -135,21 +135,17 @@ module.exports = function (app) {
       let ticker = req.query.stock;
       let like = req.query.like;
     
-      // res.send(req.query);
-    
+      // res.send(req.query);   
       // console.log(api_url);
+      
+      // res.send(ticker[0])
     
-
+    
       async function respond(ticker, like) {
         // let price = await getPrice();
         // res.send(price);
         
-        var likeFunction;
-        if (like) {
-          likeFunction = increaseLikes;
-        } else {
-          likeFunction = getLikes;
-        }
+        var likeFunction = like ? increaseLikes : getLikes;
         
         console.log(likeFunction);
         
