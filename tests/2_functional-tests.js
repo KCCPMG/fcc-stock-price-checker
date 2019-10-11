@@ -23,8 +23,10 @@ suite('Functional Tests', function() {
         .query({stock: 'goog'})
         .end(function(err, res){
           assert.equal(res.status, 200);
-          //complete this one too
-          
+          assert.property(JSON.parse(res.text).stockData, "stock");
+          assert.property(JSON.parse(res.text).stockData, "price");
+          assert.property(JSON.parse(res.text).stockData, "likes");
+          assert.equal(JSON.parse(res.text).stockData, "goog");
           done();
         });
       });
