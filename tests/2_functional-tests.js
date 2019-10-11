@@ -69,25 +69,36 @@ suite('Functional Tests', function() {
         .get('/api/stock-prices')
         .query({stock: ['goog', 'atvi']})
         .end(function(err, res){
-          console.log(res.text);
-          console.log(JSON.parse(res.text)[0]);
           assert.equal(res.status, 200);
           assert.property(JSON.parse(res.text).stockData[0], "stock");
           assert.property(JSON.parse(res.text).stockData[0], "price");
-          assert.property(JSON.parse(res.text).stockData[0], "likes");
+          assert.property(JSON.parse(res.text).stockData[0], "rel_likes");
           assert.property(JSON.parse(res.text).stockData[1], "stock");
           assert.property(JSON.parse(res.text).stockData[1], "price");
-          assert.property(JSON.parse(res.text).stockData[1], "likes");
+          assert.property(JSON.parse(res.text).stockData[1], "rel_likes");
           assert.equal(JSON.parse(res.text).stockData[0].stock, "goog");
           assert.equal(JSON.parse(res.text).stockData[1].stock, "atvi");
-          // assert.fail();
           done();
         });
       });
       
       test('2 stocks with like', function(done) {
-        assert.fail();
-        done();
+        chai.request(server)
+        .get('/api/stock-prices')
+        .query({stock: ['goog', 'atvi'], like: true})
+        .end(function(err, res){
+          assert.equal(res.status, 200);
+          assert.property(JSON.parse(res.text).stockData[0], "stock");
+          assert.property(JSON.parse(res.text).stockData[0], "price");
+          assert.property(JSON.parse(res.text).stockData[0], "rel_likes");
+          assert.property(JSON.parse(res.text).stockData[1], "stock");
+          assert.property(JSON.parse(res.text).stockData[1], "price");
+          assert.property(JSON.parse(res.text).stockData[1], "rel_likes");
+          assert.equal(JSON.parse(res.text).stockData[0].stock, "goog");
+          assert.equal(JSON.parse(res.text).stockData[1].stock, "atvi");
+          assert.equal(JSON.parse(res.text).stockData[0]-JSON.parse(res.text).stockData[1], 0);
+          done();
+        });
       });
       
     });
