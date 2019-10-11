@@ -149,19 +149,29 @@ module.exports = function (app) {
         console.log(likeFunction);
         
         if (typeof ticker === "object") {
+          Promise.all([
+            getPrice(ticker[0]),
+            likeFunction(ticker[0])
+          ]).then(function(){
+            
+          })
           
+          
+          
+        } else {
+          Promise.all([
+            getPrice(ticker),
+            likeFunction(ticker)
+          ]).then(function(data){
+            console.log(data);
+            console.log('done');
+            res.json({stockData : Object.assign({stock: ticker}, ...data)});    
+          }).catch(function(err){
+            console.log("ERROR: ", err);
+          });  
         }
         
-        Promise.all([
-          getPrice(ticker),
-          likeFunction(ticker)
-        ]).then(function(data){
-          console.log(data);
-          console.log('done');
-          res.json({stockData : Object.assign({stock: ticker}, ...data)});    
-        }).catch(function(err){
-          console.log("ERROR: ", err);
-        });       
+               
       }
       
       respond(ticker, like);
