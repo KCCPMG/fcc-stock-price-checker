@@ -45,6 +45,8 @@ const stockSchema = new mongoose.Schema({
 
 var Stock = mongoose.model('stock', stockSchema);
 
+var stockStash = {};
+
 function getPrice(ticker) {
   return new Promise(function(resolve, reject){
     let api_url = "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=" + ticker + "&interval=5min&apikey=" + process.env.ALPHA_VANTAGE_API_KEY;
@@ -57,8 +59,11 @@ function getPrice(ticker) {
           let obj = JSON.parse(this.responseText);
           if (obj["Error Message"] === "Invalid API call. Please retry or visit the documentation (https://www.alphavantage.co/documentation/) for TIME_SERIES_INTRADAY.") {
             reject("invalid stock")
+          } else if (obj["Meta Data"] === undefined) {
+            resolve({price: stockStash.ticker});
           } else {
             let lastRefreshed = obj["Meta Data"]["3. Last Refreshed"];
+            stockStash.ticker = obj["Time Series (5min)"][lastRefreshed]['4. close']
             resolve({price: obj["Time Series (5min)"][lastRefreshed]['4. close']});
           }
         } else {
