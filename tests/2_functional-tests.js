@@ -67,14 +67,18 @@ suite('Functional Tests', function() {
       test('2 stocks', function(done) {
         chai.request(server)
         .get('/api/stock-prices')
-        .query({stock: 'goog'})
+        .query({stock: 'goog', stock: 'atvi'})
         .end(function(err, res){
           assert.equal(res.status, 200);
-          assert.property(JSON.parse(res.text).stockData, "stock");
-          assert.property(JSON.parse(res.text).stockData, "price");
-          assert.property(JSON.parse(res.text).stockData, "likes");
-          assert.equal(JSON.parse(res.text).stockData.stock, "goog");
-          assert.fail();
+          assert.property(JSON.parse(res.text).stockData[0], "stock");
+          assert.property(JSON.parse(res.text).stockData[0], "price");
+          assert.property(JSON.parse(res.text).stockData[0], "likes");
+          assert.property(JSON.parse(res.text).stockData[1], "stock");
+          assert.property(JSON.parse(res.text).stockData[1], "price");
+          assert.property(JSON.parse(res.text).stockData[1], "likes");
+          assert.equal(JSON.parse(res.text).stockData[0].stock, "goog");
+          assert.equal(JSON.parse(res.text).stockData[1].stock, "atvi");
+          // assert.fail();
           done();
         });
       });
